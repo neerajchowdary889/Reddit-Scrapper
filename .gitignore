@@ -1,2 +1,3 @@
 client/.env
 server/api.csv
+server/__pycache__/
