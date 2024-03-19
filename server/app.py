@@ -76,7 +76,7 @@ def get_post_byurl():
         
         post_response = reddit_scraper.get_single_post(post_url=post_url)
 
-        print(f"Post: {post_response}")
+        # print(f"Post: {post_response}")
         
         return jsonify(post_response), 200
     except Exception as e:

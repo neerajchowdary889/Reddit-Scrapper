@@ -25,6 +25,7 @@ class Redditscraper:
             'score': post.score,
             'id': post.id,
             'url': post.url,
+            'description': post.selftext,
             'comments': [comment.body for comment in post.comments]
 
         }
