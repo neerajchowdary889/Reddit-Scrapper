@@ -1,4 +1,6 @@
 import praw
+from csv import DictWriter
+
 class Redditscraper:
     def __init__(self, my_client_id, 
                  my_client_secret, 
@@ -8,13 +10,6 @@ class Redditscraper:
                                   client_secret=my_client_secret,
                                   user_agent=my_user_agent)
         print(self.reddit.read_only)
-    
-    def scrape_comments(self, commenterID):
-        submission = self.reddit.submission(id=commenterID)
-        submission.comment_sort="new"
-        all_comments = submission.comments.list()
-
-        return all_comments
 
     def get_single_post(self, post_url):
 
@@ -31,15 +26,26 @@ class Redditscraper:
         }
         
         return response 
+    
+    def scrape_subreddit(self, subreddit_name, limit):
+        subreddit = self.reddit.subreddit(subreddit_name)
+        hot_posts = subreddit.hot(limit=limit)
+        csv_file_path = 'subreddit_posts.csv'
 
-    def get_posts(self, subreddit, limit):
-        return self.reddit.subreddit(subreddit).hot(limit=limit)
-
-    def get_comments(self, subreddit, limit):
-        return self.reddit.subreddit(subreddit).comments(limit=limit)
-
-    def get_subreddits(self, limit):
-        return self.reddit.subreddits.popular(limit=limit)
-
-    def get_user(self, username):
-        return self.reddit.redditor(username)
+        with open(csv_file_path, 'w', newline='', encoding='utf-8') as file:
+            headers = ['title', 'score', 'id', 'url', 'description', 'comments']
+            writer = DictWriter(file, fieldnames=headers)
+            writer.writeheader()
+            for post in hot_posts:
+                post.comments.replace_more(limit=None)
+                response = {
+                    'title': post.title,
+                    'score': post.score,
+                    'id': post.id,
+                    'url': post.url,
+                    'description': post.selftext,
+                    'comments':[comment.body for comment in post.comments if not isinstance(comment, praw.models.MoreComments)]
+                }
+                writer.writerow(response)
+                
+        return csv_file_path

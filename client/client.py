@@ -7,33 +7,56 @@ load_dotenv()
 
 s = requests.Session()
 
-init_url = 'http://127.0.0.1:4005/init'
+def init():
+    init_url = 'http://127.0.0.1:4005/init'
 
-data = {
-    'client_id': os.environ.get('client_id'),
-    'client_secret': os.environ.get('client_secret')
-}
+    data = {
+        'client_id': os.environ.get('client_id'),
+        'client_secret': os.environ.get('client_secret')
+    }
 
-# Send a POST request to the /init route
-response = s.post(init_url, json=data)
+    response = s.post(init_url, json=data)
 
-if response.status_code == 200:
-    print('Initialization successful')
-else:
-    print('Error initializing session:', response.text)
+    if response.status_code == 200:
+        print('Initialization successful')
+    else:
+        print('Error initializing session:', response.text)
 
-get_post_byurl_url = 'http://127.0.0.1:4005/init/get_post_byurl'
+def get_post_byurl(post_url): 
+    get_post_byurl_url = 'http://127.0.0.1:4005/init/get_post_byurl'
 
-# Define the data to send in the request body
-data = {
-    'post_url': 'https://www.reddit.com/r/IndianStockMarket/comments/1bhikze/guys_today_i_invested_first_time_in_fo/'
-}
+    data = {
+        'post_url': post_url
+    }
 
-response = s.post(get_post_byurl_url, json=data)
+    response = s.post(get_post_byurl_url, json=data)
 
-if response.status_code == 200:
-    print('Post retrieved successfully')
-    with open('response.json', 'w') as f:
-        json.dump(response.json(), f, indent=4)
-else:
-    print('Error retrieving post:', response.text)
+    if response.status_code == 200:
+        print('Post retrieved successfully')
+        with open('response.json', 'w') as f:
+            json.dump(response.json(), f, indent=4)
+    else:
+        print('Error retrieving post:', response.text)
+
+
+def get_bysubreddit(subreddit, limit):
+    get_post_subreddit = 'http://127.0.0.1:4005/init/get_bysubreddit'
+
+    data = {
+        'subreddit': subreddit,
+        'limit': limit
+    }
+
+    response = s.post(get_post_subreddit, json=data)
+
+    if response.status_code == 200:
+        print('Post retrieved successfully')
+
+        with open('subreddit_posts.csv', 'wb') as f:
+            f.write(response.content)
+    else:
+        print('Error retrieving post:', response.text)
+
+
+init()
+get_bysubreddit('gaming', 10)

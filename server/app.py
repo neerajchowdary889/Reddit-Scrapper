@@ -1,4 +1,4 @@
-from flask import Flask, request, session, jsonify
+from flask import Flask, request, session, jsonify, send_file
 from datetime import datetime
 import csv
 from RedditScarpper import Redditscraper
@@ -82,6 +82,30 @@ def get_post_byurl():
     except Exception as e:
         return f'Error: {str(e)}', 500
     
+
+@app.route('/init/get_bysubreddit', methods=['POST'])
+def get_bysubreddit():
+    """
+    Retrieves information about a subreddit and ratelimits.
+
+    Returns:
+        CSV file containing information about the subreddit.    
+    """
+
+    security('get_bysubreddit')
+    try:
+        subreddit = request.json.get('subreddit')
+        limit = request.json.get('limit')
+        print(f"Subreddit: {subreddit}")
+        
+        reddit_scraper = Redditscraper(my_client_id=session['client_id'], 
+                                       my_client_secret=session['client_secret'], 
+                                       my_user_agent=session['user_agent'])
+        
+        csv_file_path = reddit_scraper.scrape_subreddit(subreddit_name=subreddit, limit=limit)
+        return send_file(csv_file_path, mimetype='text/csv', as_attachment=True), 200
+    except Exception as e:
+        return f'Error: {str(e)}', 500
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=4005)
