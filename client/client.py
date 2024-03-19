@@ -59,4 +59,4 @@ def get_bysubreddit(subreddit, limit):
 
 
 init()
-get_bysubreddit('gaming', 10)
+get_bysubreddit('VALORANT', 5)

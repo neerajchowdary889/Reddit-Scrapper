@@ -30,7 +30,7 @@ class Redditscraper:
     def scrape_subreddit(self, subreddit_name, limit):
         subreddit = self.reddit.subreddit(subreddit_name)
         hot_posts = subreddit.hot(limit=limit)
-        csv_file_path = 'subreddit_posts.csv'
+        csv_file_path = rf'../Datasets/{subreddit_name}_post.csv'
 
         with open(csv_file_path, 'w', newline='', encoding='utf-8') as file:
             headers = ['title', 'score', 'id', 'url', 'description', 'comments']
@@ -47,5 +47,5 @@ class Redditscraper:
                     'comments':[comment.body for comment in post.comments if not isinstance(comment, praw.models.MoreComments)]
                 }
                 writer.writerow(response)
-                
+
         return csv_file_path
