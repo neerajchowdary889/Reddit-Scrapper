@@ -36,6 +36,7 @@ class Redditscraper:
             headers = ['title', 'score', 'id', 'url', 'description', 'comments']
             writer = DictWriter(file, fieldnames=headers)
             writer.writeheader()
+            num = 0
             for post in hot_posts:
                 post.comments.replace_more(limit=None)
                 response = {
@@ -46,6 +47,9 @@ class Redditscraper:
                     'description': post.selftext,
                     'comments':[comment.body for comment in post.comments if not isinstance(comment, praw.models.MoreComments)]
                 }
+                num += 1
+                if num % 10 == 0:
+                    print(f"Post {num} scraped")
                 writer.writerow(response)
 
         return csv_file_path

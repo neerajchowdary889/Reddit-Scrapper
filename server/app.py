@@ -2,6 +2,7 @@ from flask import Flask, request, session, jsonify, send_file
 from datetime import datetime
 import csv
 from RedditScarpper import Redditscraper
+import time
 
 app = Flask(__name__)
 app.secret_key = "NeerajNeeraj"
@@ -102,7 +103,11 @@ def get_bysubreddit():
                                        my_client_secret=session['client_secret'], 
                                        my_user_agent=session['user_agent'])
         
+        start = time.time()
         csv_file_path = reddit_scraper.scrape_subreddit(subreddit_name=subreddit, limit=limit)
+        end = time.time()
+        print("Execution Time: ", end-start)
+        
         return send_file(csv_file_path, mimetype='text/csv', as_attachment=True), 200
     except Exception as e:
         return f'Error: {str(e)}', 500

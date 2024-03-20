@@ -52,11 +52,11 @@ def get_bysubreddit(subreddit, limit):
     if response.status_code == 200:
         print('Post retrieved successfully')
 
-        with open('subreddit_posts.csv', 'wb') as f:
+        with open(f'{subreddit}_post.csv', 'wb') as f:
             f.write(response.content)
     else:
         print('Error retrieving post:', response.text)
 
 
 init()
-get_bysubreddit('VALORANT', 5)
+get_bysubreddit('technews', 1000)

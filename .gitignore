@@ -1,3 +1,4 @@
 client/.env
 server/api.csv
 server/__pycache__/
+__pycache__
