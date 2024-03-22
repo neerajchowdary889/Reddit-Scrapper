@@ -39,24 +39,28 @@ def get_post_byurl(post_url):
         print('Error retrieving post:', response.text)
 
 
-def get_bysubreddit(subreddit, limit):
+def get_bysubreddit(subreddit, limit, mongo_url):
     get_post_subreddit = 'http://127.0.0.1:4005/init/get_bysubreddit'
 
     data = {
         'subreddit': subreddit,
-        'limit': limit
+        'limit': limit,
+        'mongo_url': mongo_url
     }
 
     response = s.post(get_post_subreddit, json=data)
 
     if response.status_code == 200:
         print('Post retrieved successfully')
-
-        with open(f'{subreddit}_post.csv', 'wb') as f:
+        with open(f"{subreddit}_post.jsonl", 'wb') as f:
             f.write(response.content)
+    elif response.status_code == 201:
+        response = response.json()
+        print(response)
+
     else:
         print('Error retrieving post:', response.text)
 
 
 init()
-get_bysubreddit('technews', 1000)
+get_bysubreddit('Android', 10, "mongodb://admin:pass@localhost:27017/")

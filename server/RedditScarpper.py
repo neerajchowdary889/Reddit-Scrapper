@@ -1,5 +1,10 @@
 import praw
 from csv import DictWriter
+import json
+from mongoservices import(
+    Mongo,
+    is_valid_mongo_url
+)
 
 class Redditscraper:
     def __init__(self, my_client_id, 
@@ -27,29 +32,46 @@ class Redditscraper:
         
         return response 
     
-    def scrape_subreddit(self, subreddit_name, limit):
+    def scrape_subreddit(self, subreddit_name, limit, mongo_url):
+        offline = False
+
+        if not mongo_url:
+            print("Mongo URL not provided, using offline mode")
+            offline = True
+        elif not is_valid_mongo_url(mongo_url):
+            print("Invalid Mongo URL, using offline mode")
+            offline = True
+    
         subreddit = self.reddit.subreddit(subreddit_name)
         hot_posts = subreddit.hot(limit=limit)
-        csv_file_path = rf'../Datasets/{subreddit_name}_post.csv'
+        json_file_path = rf'../Datasets/{subreddit_name}_post.jsonl'
 
-        with open(csv_file_path, 'w', newline='', encoding='utf-8') as file:
-            headers = ['title', 'score', 'id', 'url', 'description', 'comments']
-            writer = DictWriter(file, fieldnames=headers)
-            writer.writeheader()
-            num = 0
-            for post in hot_posts:
-                post.comments.replace_more(limit=None)
-                response = {
-                    'title': post.title,
-                    'score': post.score,
-                    'id': post.id,
-                    'url': post.url,
-                    'description': post.selftext,
-                    'comments':[comment.body for comment in post.comments if not isinstance(comment, praw.models.MoreComments)]
-                }
-                num += 1
-                if num % 10 == 0:
-                    print(f"Post {num} scraped")
-                writer.writerow(response)
+        num = 0
+        for post in hot_posts:
+            post.comments.replace_more(limit=None)
+            response = {
+                'title': post.title,
+                'score': post.score,
+                'id': post.id,
+                'url': post.url,
+                'description': post.selftext,
+                'comments':[comment.body for comment in post.comments if not isinstance(comment, praw.models.MoreComments)]
+            }
 
-        return csv_file_path
+            num += 1
+            if num % 10 == 0:
+                print(f"Post {num} scraped")
+
+            if not offline:
+                mongo = Mongo(subreddit_name)
+                status = mongo.insert(response)
+                if not status:
+                    print("Document not uploaded to mongodb: ", response)
+            else:
+                with open(json_file_path, 'a') as f:
+                    f.write(json.dumps(response, indent=4) + "\n")
+
+        if offline:
+            return ('offline', json_file_path)
+        else:
+            return ('online', "Data uploaded to MongoDB")

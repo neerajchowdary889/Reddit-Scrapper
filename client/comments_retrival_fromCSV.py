@@ -13,6 +13,8 @@ def read_csv_file_row_by_row(file_path):
         reader = csv.DictReader(file)
         for row in reader:
             sentences = row['comments'].split("', '")
+            sentences = row["comments"].split('", "')
+
 
             sentences[0] = sentences[0].replace("['", "")
             sentences[-1] = sentences[-1].replace("']", "")
@@ -20,4 +22,4 @@ def read_csv_file_row_by_row(file_path):
             print_comments(row['title'],sentences)
 
 # Usage
-read_csv_file_row_by_row('../Datasets/gaming_post.csv')
+read_csv_file_row_by_row('../Datasets/Android_post.csv')

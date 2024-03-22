@@ -1,6 +1,4 @@
 flask
 praw
-datetime
-csv
 python-dotenv
-time
+pymongo

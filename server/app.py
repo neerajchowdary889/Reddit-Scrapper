@@ -97,6 +97,7 @@ def get_bysubreddit():
     try:
         subreddit = request.json.get('subreddit')
         limit = request.json.get('limit')
+        mongo_url = request.json.get('mongo_url')
         print(f"Subreddit: {subreddit}")
         
         reddit_scraper = Redditscraper(my_client_id=session['client_id'], 
@@ -104,11 +105,15 @@ def get_bysubreddit():
                                        my_user_agent=session['user_agent'])
         
         start = time.time()
-        csv_file_path = reddit_scraper.scrape_subreddit(subreddit_name=subreddit, limit=limit)
+        status = reddit_scraper.scrape_subreddit(subreddit_name=subreddit, limit=limit, mongo_url=mongo_url)
         end = time.time()
         print("Execution Time: ", end-start)
-        
-        return send_file(csv_file_path, mimetype='text/csv', as_attachment=True), 200
+
+        if status[0] == 'offline':
+            return send_file(status[1], as_attachment=True), 200
+        else:
+            return jsonify(status[1]), 201
+
     except Exception as e:
         return f'Error: {str(e)}', 500
 
