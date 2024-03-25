@@ -117,5 +117,54 @@ def get_bysubreddit():
     except Exception as e:
         return f'Error: {str(e)}', 500
 
+@app.route('/init/get_byuser', methods=['POST'])
+def get_byuser():
+    """
+    Retrieves information about a Reddit user's older posts.
+
+    Returns:
+        JSON response containing information of the user's older posts.
+    """
+
+    security('get_byuser')
+    try:
+        userID = request.json.get('userID')
+        limit = request.json.get('limit')
+        
+        reddit_scraper = Redditscraper(my_client_id=session['client_id'], 
+                                       my_client_secret=session['client_secret'], 
+                                       my_user_agent=session['user_agent'])
+        start = time.time()
+        response = reddit_scraper.scrape_olderdata(userID=userID, limit=limit)
+        end = time.time()
+        print("Execution Time: ", end-start)
+
+        return jsonify(response), 200
+    
+    except Exception as e:
+        return f'Error: {str(e)}', 500
+
+@app.route('/init/getid_by_name', methods=['GET'])
+def getid_by_name():
+    """
+    Retrieves the ID of a Reddit user based on their username.
+
+    Returns:
+        JSON response containing the user ID.
+    """
+
+    security('get_id_byname')
+    try:
+        username = request.args.get('username')
+        
+        reddit_scraper = Redditscraper(my_client_id=session['client_id'], 
+                                       my_client_secret=session['client_secret'], 
+                                       my_user_agent=session['user_agent'])
+        response = reddit_scraper.getId_by_name(username=username)
+
+        return jsonify(response), 200
+    except Exception as e:
+        return f'Error: {str(e)}', 500
+
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=4005)

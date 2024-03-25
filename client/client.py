@@ -61,6 +61,20 @@ def get_bysubreddit(subreddit, limit, mongo_url):
     else:
         print('Error retrieving post:', response.text)
 
+def userid_by_name(name):
+    url = f"http://127.0.0.1:4005/init/getid_by_name?username={name}"
+    response = s.get(url)
+    if response.status_code == 200:
+        print('UserID retrieved successfully')
+        print(response.text)
+    else:
+        print('Error retrieving post:', response.text)
+
+def get_user_olderPosts(userid, limit):
+    get_user_olderPosts_url = 'http://127.0.0.1:4005/init/get_byuser'
+    
+
 
 init()
-get_bysubreddit('Android', 10, "mongodb://admin:pass@localhost:27017/")
+# get_bysubreddit('Android', 10, "mongodb://admin:pass@localhost:27017/")
+userid_by_name('deshe')

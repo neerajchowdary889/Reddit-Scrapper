@@ -75,3 +75,25 @@ class Redditscraper:
             return ('offline', json_file_path)
         else:
             return ('online', "Data uploaded to MongoDB")
+    
+    def scrape_olderdata(self, userID, limit):
+        try:
+            user = self.reddit.redditor(userID)
+            submission = user.comments.new(limit=limit)
+            user_data = {
+                'url': submission.url,
+                'title': submission.title,
+                'description': submission.selftext if submission.is_self else None
+            }
+            return user_data
+        except Exception as e:
+            print(e)
+            return None
+    
+    def getId_by_name(self, username):
+        try:
+            user = self.reddit.redditor(username)
+            return user.id
+        except Exception as e:
+            print(e)
+            return None
