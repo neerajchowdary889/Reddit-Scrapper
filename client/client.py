@@ -66,15 +66,27 @@ def userid_by_name(name):
     response = s.get(url)
     if response.status_code == 200:
         print('UserID retrieved successfully')
-        print(response.text)
+        print(f"FullName: {response.json()['FullName']}")
+        print(f"UserID: {response.json()['UserID']}")
     else:
         print('Error retrieving post:', response.text)
 
 def get_user_olderPosts(userid, limit):
     get_user_olderPosts_url = 'http://127.0.0.1:4005/init/get_byuser'
-    
+    data = {
+        'userID': userid,
+        'limit': limit
+    }
+    response = s.post(get_user_olderPosts_url, json=data)
+    if response.status_code == 200:
+        print('Posts retrieved successfully')
+        with open('User_posts_response.json', 'w') as f:
+            json.dump(response.json(), f, indent=4)
+    else:
+        print('Error retrieving post:', response.text)
 
 
 init()
 # get_bysubreddit('Android', 10, "mongodb://admin:pass@localhost:27017/")
-userid_by_name('deshe')
+# userid_by_name('deshe')
+get_user_olderPosts('deshe', 10)

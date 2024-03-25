@@ -1,0 +1,52 @@
+[
+    {
+        "description": "I was wondering if it is true for any non-rational algebraic number x and every base B that all digits appear at least once in the B-ary expansion of x.\n\nI know there is a long standing open problem about all such number being normal, but the property I'm wondering about seems much weaker. I couldn't find any works discussing this question.",
+        "title": "Digits in expansions of non-rational algebraic numbers",
+        "url": "https://www.reddit.com/r/math/comments/1bit2k7/digits_in_expansions_of_nonrational_algebraic/"
+    },
+    {
+        "description": "I am currently reading a book about stopping times, and just finished the chapter about electrical networks.\n\nIn the exercises section, there was this problem:\n\n>An Oregon professor has n umbrellas, of which initially k \u2208 (0, n) are at his office and n \u2212 k are at his home. Every day, the professor walks to the office in the morning and returns home in the evening. In each trip, he takes an umbrella with him only if it is raining. Assume that in every trip between home and office or back, the chance of rain is p \u2208 (0, 1), independently of other trips.  \n>  \n>(a) Asymptotically, in what fraction of his trips does the professor get wet?  \n>  \n>(b) Determine the expected number of trips until all n umbrellas are at the same location.  \n>  \n>(c) Determine the expected number of trips until the professor gets wet.\n\nI managed to solve this problem using elementary Markov chain tools. What strikes me as odd is that the exercise appeared in the chapter about electrical networks, and I couldn't find any way to apply them to solve the problem. In fact, there isn't even anything in this chapter about expected hitting times. I do assume there is some trick the authors intended that I find, given the placement of the problem and the fact that the elementary solution is suspiciously taxing. Can anyone here maybe see it?",
+        "title": "How is this problem related to electrical networks?",
+        "url": "https://www.reddit.com/r/askmath/comments/1bcu66g/how_is_this_problem_related_to_electrical_networks/"
+    },
+    {
+        "description": null,
+        "title": "A computer is placed for the first time on the table of Aaron Teitelbaum, the Grand Rabbe of the Satmar Hasidic dynasty.",
+        "url": "https://i.redd.it/iuwlhdir84nc1.png"
+    },
+    {
+        "description": "[removed]",
+        "title": "So I graduated, what math do I do next?",
+        "url": "https://www.reddit.com/r/math/comments/1b9vgwa/so_i_graduated_what_math_do_i_do_next/"
+    },
+    {
+        "description": "Edit: I didn't ask what *Israel* can do, I asked what *we* can do. Afaik nobody here has the authority to control Israeli or IDF policy. Please stay on point.\n\nI'm honestly baffled by how common this talking point is. Lebanese people, even those who are far from supporting Hezbollah, still seem to wholeheartedly believe this is all an excuse to annex south Lebanon, to the extent that they completely ignore the fact that 100% of the last month's bombings were retaliatory and Israel has been very patient about Hezb's infringement of resolution 1701 (and in fact, at this point we can all agree that it has been **way too** lenient).\n\nI'd expect at least some Lebanese would argue that the realistic way to stop the mutual aggressions is that Hezbollah fulfills its obligation to stay north of the Litani, but many are actually convinced that if that happens Israel will annex territories in south Lebanon. They are actually convinced that Hezbolla **protects** them.\n\nHow did we get here and what can be done?",
+        "title": "How can we convince more Lebanese that Israel has no intention to conquer or occupy South Lebanon?",
+        "url": "https://www.reddit.com/r/ForbiddenBromance/comments/1b8786w/how_can_we_convince_more_lebanese_that_israel_has/"
+    },
+    {
+        "description": "Someone made a thread about Israel in some other sub, and I wrote a reply that I think is valuable. Unfortunately, OP soon removed the thread, so my efforts went to waste. I decided to repost it here because why not:\n\n(full disclosure: I'm an Israeli who lost acquaintances during 7.10, or as I prefer to call it, the Netanyahu massacre)\r  \n\r  \nThe first thing that must be clarified is that \\[there is no genocide in Gaza\\](https://www.tabletmag.com/sections/israel-middle-east/articles/israel-winning-gaza?fbclid=IwAR1oDGmtkzbNTWrQMjfa406iTW3uHEQzZ0C54CgCrY0tK6iyTdjqkHHZ8as). Hamas has entrenched itself deeply into the civilian population to deliberately increase civilian casualties and yet, the combatant to collateral deaths in the operation is literally the best in the history of warfare, a consequence of IDFs unprecedented efforts to minimise civilian casualties given the circumstances.\r  \n\r  \nIsrael must ensure its safety and the only way to do so is uprooting Hamas. This will happen eventually either way. Hamas has the option to release the hostages and surrender but they choose to keep sacrificing the Gazan civilians and making outrageous demands in return for a cease fire. A sacrifice which they do \\[openly and proudly\\](https://www.algemeiner.com/2023/12/08/hamas-says-it-is-proud-to-sacrifice-gazans-to-defeat-israel/). In particular, accepting their terms means giving them the leeway they need to regroup and repeat the Netanyahu massacre, \\[as they said they would\\](https://www.google.com/amp/s/www.timesofisrael.com/hamas-official-says-group-aims-to-repeat-oct-7-onslaught-many-times-to-destroy-israel/amp/).\r  \n\r  \nEchoing the preposterous accusations of genocide and failing to take a moral stand is rewarding this type of warfare. If the outcome of this conflict is that the world gives terrorists a free pass as long as they entrench themselves deep enough into civilians, the result would just be that we see much more of this type of warfare in the future. This is not just about Israel's security, it's about not allowing such a dangerous norm to set in.\r  \n\r  \nYou would notice that while the self righteous west is very inflammatory about this conflict, most of the Sunnite Arab world (most notably Egypt, UAE and Saudi Arabia) quietly support Israel's endeavour. That's because they know very well that Hamas is not just Israel's problem but a threat to regional and global stability and to normalisation of Arab nations with the west. At the bottom line, Israel is doing everyone a service, including Palestinians.\r  \n\r  \nThere are many valid criticisms about Israel, mostly about its current ghoulish government and their utter refusal to engage in international discourse about the day after in Gaza. And still, portraying both sides as \"just as bad\" is a position that could only be either morally bankrupt or ignorant. In your case, I believe it is the latter, due to your shallow exposition.\r  \n\r  \nAlso, that's maybe besides the point, but remember that while for you this is a matter of hypothetical discussion, for others it is a source of deep grief and trauma. Imagine how it feels like for an Israeli who lost literally dozens of acquaintances on that day, many of whom raped, tortured and mutilated, seeing someone with an obviously shallow understanding of the conflict decreeing them \"just as bad\" for doing what's necessary to ensure such a thing never happens again.",
+        "title": "A reply I wrote to a deleted thread",
+        "url": "https://www.reddit.com/r/IsraelPalestine/comments/1ax5zty/a_reply_i_wrote_to_a_deleted_thread/"
+    },
+    {
+        "description": "I created it during my M.Sc  years ago, and have since shifted my interest many times and frankly, have lost all touch with model theory.\n\nI think it would be for the best if someone who cares about the field inherits it.",
+        "title": "Does anyone want to take over this sub?",
+        "url": "https://www.reddit.com/r/modeltheory/comments/1aqruz1/does_anyone_want_to_take_over_this_sub/"
+    },
+    {
+        "description": null,
+        "title": "GHOSTDAG 101 - A deep dive into Kaspa's consensus layer",
+        "url": "https://www.youtube.com/watch?v=nhI2zo44dfc"
+    },
+    {
+        "description": null,
+        "title": "GHOSTDAG 101: this Wednesday, I will be hosting a live workshop about GHOSTDAG, the workshop will be a bit challenging tech-wise and will dive into some of the deeper aspects of the engine Kaspa runs on. I hope to see you all there!",
+        "url": "https://twitter.com/KaspaCurrency/status/1649483379950211092"
+    },
+    {
+        "description": "I'm in a talking mood, humour me.",
+        "title": "Anything you'd like me to explain about the tech, or myself?",
+        "url": "https://www.reddit.com/r/kaspa/comments/zpkrh7/anything_youd_like_me_to_explain_about_the_tech/"
+    }
+]

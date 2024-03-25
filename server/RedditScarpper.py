@@ -1,4 +1,5 @@
 import praw
+import prawcore
 from csv import DictWriter
 import json
 from mongoservices import(
@@ -77,15 +78,28 @@ class Redditscraper:
             return ('online', "Data uploaded to MongoDB")
     
     def scrape_olderdata(self, userID, limit):
+        if not userID:
+            print("Error: No userID provided")
+            return None
+        
         try:
+            print(f"Scraping data for user: {userID}")
             user = self.reddit.redditor(userID)
-            submission = user.comments.new(limit=limit)
-            user_data = {
-                'url': submission.url,
-                'title': submission.title,
-                'description': submission.selftext if submission.is_self else None
-            }
+            submissions = user.submissions.hot(limit=limit)
+            user_data = []
+            for submission in submissions:
+                data = {
+                    'url': submission.url,
+                    'title': submission.title,
+                    'description': submission.selftext if submission.is_self else None
+                }
+                user_data.append(data)
             return user_data
+        
+        except prawcore.exceptions.NotFound:
+            print(f"User {userID} not found")
+            return None
+        
         except Exception as e:
             print(e)
             return None
@@ -93,7 +107,8 @@ class Redditscraper:
     def getId_by_name(self, username):
         try:
             user = self.reddit.redditor(username)
-            return user.id
+
+            return {"UserID":user.id, "FullName":user.fullname}
         except Exception as e:
             print(e)
             return None
