@@ -2,3 +2,4 @@ client/.env
 server/api.csv
 server/__pycache__/
 __pycache__
+client/comments_retrival_fromCSV.py
