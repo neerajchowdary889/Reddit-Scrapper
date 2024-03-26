@@ -70,7 +70,10 @@ class Redditscraper:
                     print("Document not uploaded to mongodb: ", response)
             else:
                 with open(json_file_path, 'a') as f:
-                    f.write(json.dumps(response, indent=4) + "\n")
+                    # f.write(json.dumps(response, indent=4))
+                    # f.write(json.dumps(response, indent=4) + "\n")
+                    json.dump(response, f)
+                    f.write('\n')
 
         if offline:
             return ('offline', json_file_path)
