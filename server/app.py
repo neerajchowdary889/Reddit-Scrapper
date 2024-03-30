@@ -97,7 +97,7 @@ def get_bysubreddit():
     try:
         subreddit = request.json.get('subreddit')
         limit = request.json.get('limit')
-        mongo_url = request.json.get('mongo_url')
+        Mongo_url = request.json.get('Mongo_url')
         print(f"Subreddit: {subreddit}")
         
         reddit_scraper = Redditscraper(my_client_id=session['client_id'], 
@@ -105,7 +105,7 @@ def get_bysubreddit():
                                        my_user_agent=session['user_agent'])
         
         start = time.time()
-        status = reddit_scraper.scrape_subreddit(subreddit_name=subreddit, limit=limit, mongo_url=mongo_url)
+        status = reddit_scraper.scrape_subreddit(subreddit_name=subreddit, limit=limit, Mongo_url=Mongo_url)
         end = time.time()
         print("Execution Time: ", end-start)
 

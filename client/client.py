@@ -39,13 +39,13 @@ def get_post_byurl(post_url):
         print('Error retrieving post:', response.text)
 
 
-def get_bysubreddit(subreddit, limit, mongo_url):
+def get_bysubreddit(subreddit, limit, Mongo_url):
     get_post_subreddit = 'http://127.0.0.1:4005/init/get_bysubreddit'
 
     data = {
         'subreddit': subreddit,
         'limit': limit,
-        'mongo_url': mongo_url
+        'Mongo_url': Mongo_url
     }
 
     response = s.post(get_post_subreddit, json=data)
@@ -86,7 +86,8 @@ def get_user_olderPosts(userid, limit):
         print('Error retrieving post:', response.text)
 
 
+
 init()
-# get_bysubreddit('Android', 10, "mongodb://admin:pass@localhost:27017/")
+get_bysubreddit('blockchaindeveloper', 10, None)
 # userid_by_name('deshe')
-get_user_olderPosts('deshe', 10)
+# get_user_olderPosts('deshe', 10)

@@ -15,7 +15,7 @@ class Redditscraper:
         self.reddit = praw.Reddit(client_id=my_client_id,
                                   client_secret=my_client_secret,
                                   user_agent=my_user_agent)
-        print(self.reddit.read_only)
+        self.reddit.read_only
 
     def get_single_post(self, post_url):
 
@@ -33,13 +33,13 @@ class Redditscraper:
         
         return response 
     
-    def scrape_subreddit(self, subreddit_name, limit, mongo_url):
+    def scrape_subreddit(self, subreddit_name, limit, Mongo_url):
         offline = False
 
-        if not mongo_url:
+        if not Mongo_url:
             print("Mongo URL not provided, using offline mode")
             offline = True
-        elif not is_valid_mongo_url(mongo_url):
+        elif not is_valid_mongo_url(Mongo_url):
             print("Invalid Mongo URL, using offline mode")
             offline = True
     
@@ -49,6 +49,9 @@ class Redditscraper:
 
         num = 0
         for post in hot_posts:
+            if ('.jpg' in post.url) or ('.png' in post.url):
+                continue
+                  
             post.comments.replace_more(limit=None)
             response = {
                 'title': post.title,
@@ -64,14 +67,13 @@ class Redditscraper:
                 print(f"Post {num} scraped")
 
             if not offline:
-                mongo = Mongo(subreddit_name)
+                mongo = Mongo(collection=subreddit_name, Mongo_url=Mongo_url)
                 status = mongo.insert(response)
                 if not status:
-                    print("Document not uploaded to mongodb: ", response)
-            else:
+                    print(f"Error inserting data into MongoDB, Title --> {response['title']} ")
+
+            if offline:
                 with open(json_file_path, 'a') as f:
-                    # f.write(json.dumps(response, indent=4))
-                    # f.write(json.dumps(response, indent=4) + "\n")
                     json.dump(response, f)
                     f.write('\n')
 

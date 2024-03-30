@@ -2,18 +2,16 @@ from typing import List, Union
 import pymongo
 from pymongo.errors import ServerSelectionTimeoutError
 
-# from dotenv import load_dotenv
 import os
-# load_dotenv()
+
 
 class Mongo:
-    def __init__(self, collection):
+    def __init__(self, collection, Mongo_url):
         """
         Initializes the Mongo object by connecting to the MongoDB database,
         accessing the "TrustVault" database, and the "CIDs" collection.
         """
-        self.client = pymongo.MongoClient("mongodb://admin:pass@localhost:27017/")
-        # self.client = pymongo.MongoClient(os.getenv("Mongo_url"))
+        self.client = pymongo.MongoClient(Mongo_url)
 
         # database = reddit
         self.db = self.client['reddit']
