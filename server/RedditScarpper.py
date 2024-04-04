@@ -2,10 +2,12 @@ import praw
 import prawcore
 from csv import DictWriter
 import json
+import time
 from mongoservices import(
     Mongo,
     is_valid_mongo_url
 )
+
 
 class Redditscraper:
     def __init__(self, my_client_id, 
@@ -15,7 +17,7 @@ class Redditscraper:
         self.reddit = praw.Reddit(client_id=my_client_id,
                                   client_secret=my_client_secret,
                                   user_agent=my_user_agent)
-        self.reddit.read_only
+        print(self.reddit.read_only)
 
     def get_single_post(self, post_url):
 
@@ -50,32 +52,38 @@ class Redditscraper:
         num = 0
         for post in hot_posts:
             if ('.jpg' in post.url) or ('.png' in post.url):
+                print(".png")
                 continue
-                  
-            post.comments.replace_more(limit=None)
-            response = {
-                'title': post.title,
-                'score': post.score,
-                'id': post.id,
-                'url': post.url,
-                'description': post.selftext,
-                'comments':[comment.body for comment in post.comments if not isinstance(comment, praw.models.MoreComments)]
-            }
+            try: 
+                post.comments.replace_more(limit=None)
+                response = {
+                    'title': post.title,
+                    'score': post.score,
+                    'id': post.id,
+                    'url': post.url,
+                    'description': post.selftext,
+                    'comments':[comment.body for comment in post.comments if not isinstance(comment, praw.models.MoreComments)]
+                }
 
-            num += 1
-            if num % 10 == 0:
-                print(f"Post {num} scraped")
+                num += 1
+                if num % 10 == 0:
+                    print(f"Post {num} scraped")
 
-            if not offline:
-                mongo = Mongo(collection=subreddit_name, Mongo_url=Mongo_url)
-                status = mongo.insert(response)
-                if not status:
-                    print(f"Error inserting data into MongoDB, Title --> {response['title']} ")
+                if not offline:
+                    mongo = Mongo(collection=subreddit_name, Mongo_url=Mongo_url)
+                    status = mongo.insert(response)
+                    if not status:
 
-            if offline:
-                with open(json_file_path, 'a') as f:
-                    json.dump(response, f)
-                    f.write('\n')
+                        print(f"Error inserting data into MongoDB, Title --> {response['title']} ")
+
+                if offline:
+                    with open(json_file_path, 'a') as f:
+                        json.dump(response, f)
+                        f.write('\n')
+            except Exception as e:
+                if e.response.status_code == 429:
+                    print("Rate limit exceeded... sleep for 10 seconds")
+                    time.sleep(10)
 
         if offline:
             return ('offline', json_file_path)
