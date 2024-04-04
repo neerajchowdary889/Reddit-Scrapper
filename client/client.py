@@ -86,8 +86,9 @@ def get_user_olderPosts(userid, limit):
         print('Error retrieving post:', response.text)
 
 
-
 init()
-get_bysubreddit('blockchaindeveloper', 10, None)
+# subreddits = ['AskReddit', 'science', 'tech', 'politics', 'gaming', 'startups', 'CSEducation', 'techolitics', 'ArtificialInteligence']
+
+get_bysubreddit(subreddit="politics", limit=1000, Mongo_url="mongodb://localhost:27017/")
 # userid_by_name('deshe')
 # get_user_olderPosts('deshe', 10)
