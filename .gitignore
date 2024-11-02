@@ -4,3 +4,4 @@ server/__pycache__/
 __pycache__
 client/comments_retrival_fromCSV.py
 client/datavisualization.py
+*/node_modules
