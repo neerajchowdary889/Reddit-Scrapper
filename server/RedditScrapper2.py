@@ -1,37 +1,41 @@
-import praw
-import prawcore
-from csv import DictWriter
+from redditwarp.client import Client
+from redditwarp.models.comment_tree import CommentForest
 import json
 import time
-from mongoservices import(
+from mongoservices import (
     Mongo,
     is_valid_mongo_url
 )
-
 
 class Redditscraper:
     def __init__(self, my_client_id, 
                  my_client_secret, 
                  my_user_agent):
-        self.reddit = praw.Reddit(client_id=my_client_id,
-                                  client_secret=my_client_secret,
-                                  user_agent=my_user_agent)
-        print(self.reddit.read_only)
+        
+        self.client = Client(
+            client_id=my_client_id,
+            client_secret=my_client_secret,
+            user_agent=my_user_agent
+        )
+        self.client.auth.login_application_only()
+        print("Logged in successfully")
 
     def get_single_post(self, post_url):
+        # RedditWarp doesn't use direct URLs to fetch posts, need to parse the ID from the URL
+        post_id = post_url.split('/')[-3]  # Extract the ID from the URL
+        post = self.client.post.pull(id=post_id)
 
-        post = self.reddit.submission(url=post_url)
-
-        response =  {
+        # Use the CommentForest to get comments in a similar way as PRAW
+        comments = post.comments
+        response = {
             'title': post.title,
             'score': post.score,
             'id': post.id,
             'url': post.url,
-            'description': post.selftext,
-            'comments': [comment.body for comment in post.comments]
-
+            'description': post.self_text,
+            'comments': [comment.body for comment in comments.iter_flat() if not isinstance(comment, CommentForest)]
         }
-        
+
         return response 
     
     def scrape_subreddit(self, subreddit_name, limit, Mongo_url):
@@ -44,7 +48,7 @@ class Redditscraper:
             print("Invalid Mongo URL, using offline mode")
             offline = True
     
-        subreddit = self.reddit.subreddit(subreddit_name)
+        subreddit = self.client.subreddit.get(subreddit_name)
         hot_posts = subreddit.hot(limit=limit)
         json_file_path = rf'../Datasets/{subreddit_name}_post.jsonl'
 
@@ -53,15 +57,15 @@ class Redditscraper:
             if ('.jpg' in post.url) or ('.png' in post.url):
                 print(".png")
                 continue
-            try: 
-                post.comments.replace_more(limit=None)
+            try:
+                comments = post.comments
                 response = {
                     'title': post.title,
                     'score': post.score,
                     'id': post.id,
                     'url': post.url,
-                    'description': post.selftext,
-                    'comments':[comment.body for comment in post.comments if not isinstance(comment, praw.models.MoreComments)]
+                    'description': post.self_text,
+                    'comments': [comment.body for comment in comments.iter_flat() if not isinstance(comment, CommentForest)]
                 }
 
                 num += 1
@@ -72,7 +76,6 @@ class Redditscraper:
                     mongo = Mongo(collection=subreddit_name, Mongo_url=Mongo_url)
                     status = mongo.insert(response)
                     if not status:
-
                         print(f"Error inserting data into MongoDB, Title --> {response['title']} ")
 
                 if offline:
@@ -80,7 +83,7 @@ class Redditscraper:
                         json.dump(response, f)
                         f.write('\n')
             except Exception as e:
-                if e.response.status_code == 429:
+                if hasattr(e, 'response') and e.response.status_code == 429:
                     print("Rate limit exceeded... sleep for 10 seconds")
                     time.sleep(10)
 
@@ -96,21 +99,17 @@ class Redditscraper:
         
         try:
             print(f"Scraping data for user: {userID}")
-            user = self.reddit.redditor(userID)
-            submissions = user.submissions.hot(limit=limit)
+            user = self.client.user.get(userID)
+            submissions = user.get_submissions(limit=limit)
             user_data = []
             for submission in submissions:
                 data = {
                     'url': submission.url,
                     'title': submission.title,
-                    'description': submission.selftext if submission.is_self else None
+                    'description': submission.self_text if submission.is_self else None
                 }
                 user_data.append(data)
             return user_data
-        
-        except prawcore.exceptions.NotFound:
-            print(f"User {userID} not found")
-            return None
         
         except Exception as e:
             print(e)
@@ -118,9 +117,9 @@ class Redditscraper:
     
     def getId_by_name(self, username):
         try:
-            user = self.reddit.redditor(username)
-
-            return {"UserID":user.id, "FullName":user.fullname}
+            user = self.client.user.get(username)
+            return {"UserID": user.id, "FullName": user.name}
         except Exception as e:
             print(e)
             return None
+val = Redditscraper("RrNZ7mBHM2Eivu_tjJ5P7w", "jUM3-NjnW3hxFVnTDVNrwJ_5r4TFhw", "my_user_agent")
