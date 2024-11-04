@@ -89,6 +89,6 @@ def get_user_olderPosts(userid, limit):
 init()
 # subreddits = ['AskReddit', 'science', 'tech', 'politics', 'gaming', 'startups', 'CSEducation', 'techolitics', 'ArtificialInteligence']
 
-get_bysubreddit(subreddit="politics", limit=100, Mongo_url="mongodb+srv://Test_Neeraj:Neeraj123@neerajcluster.orcfeje.mongodb.net/?retryWrites=true&w=majority&appName=NeerajCluster")
+get_bysubreddit(subreddit="politics", limit=100, Mongo_url="mongodbURL")
 # userid_by_name('deshe')
 # get_user_olderPosts('deshe', 10)
